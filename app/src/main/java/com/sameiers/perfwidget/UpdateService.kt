@@ -23,7 +23,7 @@ class UpdateService : Service() {
     private var running    = false
     private lateinit var thread: Thread
     private var isScreenOn = true
-    private val myServers = listOf(
+        private val myServers = listOf<Pair<String, Int>>(
         // Aquí pueden agregar sus servidores custom
        // Example: Pair("123.123.12.123", 6080)
     )
