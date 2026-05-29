@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#AA000000"
+    android:padding="10dp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/tv_cpu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CPU:  --% @ ----MHz  --°C"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
+        android:fontFamily="monospace"
+        android:singleLine="true"/>
+
+    <TextView
+        android:id="@+id/tv_ram"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RAM:  ---- / ---- MB"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
+        android:fontFamily="monospace"
+        android:singleLine="true"/>
+
+    <TextView
+        android:id="@+id/tv_swap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SWAP: ---- / ---- MB"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
+        android:fontFamily="monospace"
+        android:singleLine="true"/>
+
+    <TextView
+        android:id="@+id/tv_storage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ROM:  ---- / ---- GB"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
+        android:fontFamily="monospace"
+        android:singleLine="true"/>
+
+    <TextView
+        android:id="@+id/tv_bat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="BAT:  --% @ --°C"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
+        android:fontFamily="monospace"
+        android:singleLine="true"/>
+
+    <TextView
+        android:id="@+id/tv_net"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NET:  D: -- KB/s U: -- KB/s"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
+        android:fontFamily="monospace"
+        android:singleLine="true"/>
+
+    <TextView
+        android:id="@+id/tv_up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="UP:   --:--:--"
+        android:textColor="#AAFFFFFF"
+        android:textSize="11sp"
+        android:fontFamily="monospace"
+        android:singleLine="true"/>
+
+    <TextView
+        android:id="@+id/tv_servers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SRV:  Toque para chequear"
+        android:textColor="#AAFFFFFF"
+        android:textSize="11sp"
+        android:fontFamily="monospace"/>
+
+</LinearLayout>
