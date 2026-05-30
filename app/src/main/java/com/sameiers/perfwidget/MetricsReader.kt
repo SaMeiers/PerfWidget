@@ -46,10 +46,12 @@ object MetricsReader {
 
     data class CpuData(val usage: String, val freq: String, val temp: String)
 
-    fun getCpuData(): CpuData {
+    fun getCpuData(customTempPath: String, customFreqPath: String): CpuData {
         return try {
-            val zonePath = findCpuThermalZone()
-            val cmd = "cat /proc/stat | grep '^cpu '; cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq; cat $zonePath"
+            val zonePath = if (customTempPath.isNotEmpty()) customTempPath else findCpuThermalZone()
+            val freqPath = if (customFreqPath.isNotEmpty()) customFreqPath else "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq"
+            
+            val cmd = "cat /proc/stat | grep '^cpu '; cat $freqPath; cat $zonePath"
             val result = Shell.cmd(cmd).exec()
 
             var usageStr = "N/A"
@@ -122,7 +124,7 @@ object MetricsReader {
         } catch (_: Exception) { "N/A" }
     }
 
-        fun getNetworkSpeed(): Pair<String, String> {
+    fun getNetworkSpeed(): Pair<String, String> {
         val now = SystemClock.elapsedRealtime()
         val rx = TrafficStats.getTotalRxBytes()
         val tx = TrafficStats.getTotalTxBytes()
@@ -142,7 +144,6 @@ object MetricsReader {
         lastNetTime = now
 
         fun formatBytes(bytes: Long): String {
-        
             val bytesPerSec = bytes / diffTime
             val kbps = bytesPerSec / 1024f
             
