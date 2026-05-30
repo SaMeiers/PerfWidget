@@ -24,14 +24,6 @@ object MetricsReader {
     private val cpuLock = Any()
     private val netLock = Any()
 
-    fun init() {
-        Shell.setDefaultBuilder(
-            Shell.Builder.create()
-                .setFlags(Shell.FLAG_REDIRECT_STDERR)
-                .setTimeout(10)
-        )
-    }
-
     private fun findCpuThermalZone(): String {
         cpuThermalZonePath?.let { return it }
         try {
