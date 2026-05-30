@@ -99,12 +99,13 @@ class MainActivity : Activity() {
         val etFreq     = findViewById<EditText>(R.id.et_freq_path)
         val etServers  = findViewById<EditText>(R.id.et_servers)
 
-        val swRam  = findViewById<Switch>(R.id.sw_ram)
-        val swSwap = findViewById<Switch>(R.id.sw_swap)
-        val swRom  = findViewById<Switch>(R.id.sw_rom)
-        val swBat  = findViewById<Switch>(R.id.sw_bat)
-        val swNet  = findViewById<Switch>(R.id.sw_net)
-        val swSrv  = findViewById<Switch>(R.id.sw_srv)
+        val swRam   = findViewById<Switch>(R.id.sw_ram)
+        val swSwap  = findViewById<Switch>(R.id.sw_swap)
+        val swRom   = findViewById<Switch>(R.id.sw_rom)
+        val swBat   = findViewById<Switch>(R.id.sw_bat)
+        val swNet   = findViewById<Switch>(R.id.sw_net)
+        val swSrv   = findViewById<Switch>(R.id.sw_srv)
+        val swMyRam = findViewById<Switch>(R.id.sw_my_ram)
 
         val btnSave      = findViewById<Button>(R.id.btn_save)
         val btnHideNotif = findViewById<Button>(R.id.btn_hide_notif)
@@ -115,12 +116,13 @@ class MainActivity : Activity() {
         etFreq.setText(prefs.getString("custom_freq_path", ""))
         etServers.setText(prefs.getString("custom_servers", ""))
 
-        swRam.isChecked  = prefs.getBoolean("show_ram",  true)
-        swSwap.isChecked = prefs.getBoolean("show_swap", true)
-        swRom.isChecked  = prefs.getBoolean("show_rom",  true)
-        swBat.isChecked  = prefs.getBoolean("show_bat",  true)
-        swNet.isChecked  = prefs.getBoolean("show_net",  true)
-        swSrv.isChecked  = prefs.getBoolean("show_srv",  true)
+        swRam.isChecked   = prefs.getBoolean("show_ram",  true)
+        swSwap.isChecked  = prefs.getBoolean("show_swap", true)
+        swRom.isChecked   = prefs.getBoolean("show_rom",  true)
+        swBat.isChecked   = prefs.getBoolean("show_bat",  true)
+        swNet.isChecked   = prefs.getBoolean("show_net",  true)
+        swSrv.isChecked   = prefs.getBoolean("show_srv",  true)
+        swMyRam.isChecked = prefs.getBoolean("show_my_ram", false)
 
         btnSave.setOnClickListener {
 
@@ -143,12 +145,14 @@ class MainActivity : Activity() {
                 putString("custom_temp_path", etTemp.text.toString().trim())
                 putString("custom_freq_path", etFreq.text.toString().trim())
                 putString("custom_servers",   etServers.text.toString().trim())
-                putBoolean("show_ram",  swRam.isChecked)
-                putBoolean("show_swap", swSwap.isChecked)
-                putBoolean("show_rom",  swRom.isChecked)
-                putBoolean("show_bat",  swBat.isChecked)
-                putBoolean("show_net",  swNet.isChecked)
-                putBoolean("show_srv",  swSrv.isChecked)
+                
+                putBoolean("show_ram",    swRam.isChecked)
+                putBoolean("show_swap",   swSwap.isChecked)
+                putBoolean("show_rom",    swRom.isChecked)
+                putBoolean("show_bat",    swBat.isChecked)
+                putBoolean("show_net",    swNet.isChecked)
+                putBoolean("show_srv",    swSrv.isChecked)
+                putBoolean("show_my_ram", swMyRam.isChecked)
                 apply()
             }
 

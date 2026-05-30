@@ -97,7 +97,6 @@ class UpdateService : Service() {
                     if (updateInterval > 0) {
                         Thread.sleep(updateInterval * 1000L)
                     } else {
-                        
                         Thread.sleep(3600000L)
                     }
                 }
@@ -126,6 +125,12 @@ class UpdateService : Service() {
         temp >= 50 -> Color.parseColor("#FF4444")
         temp >= 40 -> Color.parseColor("#FFBB33")
         else       -> Color.parseColor("#00CC44")
+    }
+
+    private fun batColor(percent: Int): Int = when {
+        percent >= 70 -> Color.parseColor("#00CC44")
+        percent >= 40 -> Color.parseColor("#FFBB33")
+        else          -> Color.parseColor("#FF4444")
     }
 
     private fun colorToHex(color: Int): String = String.format("#%06X", 0xFFFFFF and color)
@@ -179,8 +184,13 @@ class UpdateService : Service() {
         views.setTextViewText(R.id.tv_ram, ramText)
         views.setTextViewText(R.id.tv_swap, swapText)
         views.setTextViewText(R.id.tv_storage, "ROM:  $storage")
-        views.setTextViewText(R.id.tv_bat,  "BAT:  $batPct% @ ${batTemp}°C")
-        views.setTextViewText(R.id.tv_net,  "NET:  D: ${net.first}  U: ${net.second}")
+
+        views.setTextViewText(R.id.tv_bat_pct, "$batPct%")
+        views.setTextViewText(R.id.tv_bat_temp, "${batTemp}°C")
+        views.setTextColor(R.id.tv_bat_pct, batColor(batPct))
+        views.setTextColor(R.id.tv_bat_temp, tempColor(batTemp.toLong()))
+
+        views.setTextViewText(R.id.tv_net, "NET:  D: ${net.first}  U: ${net.second}")
         views.setTextViewText(R.id.tv_up,   "UP:   $uptime")
 
         val htmlServersText = "SRV:  $lastServerStatusHtml"
@@ -192,7 +202,7 @@ class UpdateService : Service() {
         views.setViewVisibility(R.id.tv_ram, if (prefs.getBoolean("show_ram", true)) View.VISIBLE else View.GONE)
         views.setViewVisibility(R.id.tv_swap, if (prefs.getBoolean("show_swap", true)) View.VISIBLE else View.GONE)
         views.setViewVisibility(R.id.tv_storage, if (prefs.getBoolean("show_rom", true)) View.VISIBLE else View.GONE)
-        views.setViewVisibility(R.id.tv_bat, if (prefs.getBoolean("show_bat", true)) View.VISIBLE else View.GONE)
+        views.setViewVisibility(R.id.ll_bat_container, if (prefs.getBoolean("show_bat", true)) View.VISIBLE else View.GONE)
         views.setViewVisibility(R.id.tv_net, if (prefs.getBoolean("show_net", true)) View.VISIBLE else View.GONE)
         views.setViewVisibility(R.id.tv_servers, if (prefs.getBoolean("show_srv", true)) View.VISIBLE else View.GONE)
 

@@ -218,4 +218,12 @@ object MetricsReader {
             result.out.firstOrNull()?.trim()?.toIntOrNull() ?: 8
         } catch (_: Exception) { 8 }
     }
+
+    fun getAppRamUsage(): Long {
+        return try {
+            val memInfo = android.os.Debug.MemoryInfo()
+            android.os.Debug.getMemoryInfo(memInfo)
+            memInfo.totalPss / 1024L 
+        } catch (_: Exception) { 0L }
+    }
 }
