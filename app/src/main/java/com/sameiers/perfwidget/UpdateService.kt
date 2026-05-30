@@ -21,7 +21,7 @@ class UpdateService : Service() {
 
     private val CHANNEL_ID = "perf_widget_channel"
     private val NOTIF_ID   = 1
-    private var running    = false
+    @Volatile private var running = false
     private lateinit var thread: Thread
     private var isScreenOn = true
 
@@ -60,7 +60,6 @@ class UpdateService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        MetricsReader.init()
         createChannel()
         val notif = Notification.Builder(this, CHANNEL_ID)
             .setContentTitle("PerfWidget")
