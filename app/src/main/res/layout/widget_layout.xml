@@ -87,6 +87,16 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_app_ram"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="APP:  -- MB"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
+        android:fontFamily="monospace"
+        android:singleLine="true"/>
+
+    <TextView
         android:id="@+id/tv_net"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
