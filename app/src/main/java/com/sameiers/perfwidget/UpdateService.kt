@@ -60,6 +60,7 @@ class UpdateService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        MetricsReader.init()
         createChannel()
         val notif = Notification.Builder(this, CHANNEL_ID)
             .setContentTitle("PerfWidget")
