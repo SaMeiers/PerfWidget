@@ -152,6 +152,7 @@ class UpdateService : Service() {
         val net     = MetricsReader.getNetworkSpeed()
         val uptime  = MetricsReader.getUptime()
         val (batPct, batTemp) = MetricsReader.getBatteryInfo(this)
+        val appRamMB = MetricsReader.getAppRamUsage()
 
         val views = RemoteViews(packageName, R.layout.widget_layout)
 
@@ -190,6 +191,7 @@ class UpdateService : Service() {
         views.setTextColor(R.id.tv_bat_pct, batColor(batPct))
         views.setTextColor(R.id.tv_bat_temp, tempColor(batTemp.toLong()))
 
+        views.setTextViewText(R.id.tv_app_ram, "APP:  ${appRamMB} MB")
         views.setTextViewText(R.id.tv_net, "NET:  D: ${net.first}  U: ${net.second}")
         views.setTextViewText(R.id.tv_up,   "UP:   $uptime")
 
@@ -205,6 +207,7 @@ class UpdateService : Service() {
         views.setViewVisibility(R.id.ll_bat_container, if (prefs.getBoolean("show_bat", true)) View.VISIBLE else View.GONE)
         views.setViewVisibility(R.id.tv_net, if (prefs.getBoolean("show_net", true)) View.VISIBLE else View.GONE)
         views.setViewVisibility(R.id.tv_servers, if (prefs.getBoolean("show_srv", true)) View.VISIBLE else View.GONE)
+        views.setViewVisibility(R.id.tv_app_ram, if (prefs.getBoolean("show_my_ram", false)) View.VISIBLE else View.GONE)
 
         val mgr = AppWidgetManager.getInstance(this)
         val ids = mgr.getAppWidgetIds(ComponentName(this, PerfWidget::class.java))
