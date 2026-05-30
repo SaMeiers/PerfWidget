@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PerfWidget Settings"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"/>
+
+        <Switch
+            android:id="@+id/switch_ascii"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Usar Interfaz Gráfica ASCII"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Intervalo de actualización (Segundos, 0 = Manual)"
+            android:textColor="#AAAAAA"/>
+        <EditText
+            android:id="@+id/et_interval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Servidores (IP:PUERTO separados por coma)"
+            android:textColor="#AAAAAA"/>
+        <EditText
+            android:id="@+id/et_servers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ej: 192.168.1.1:80, 8.8.8.8:53"
+            android:textColorHint="#555555"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ruta Custom Temperatura (Dejar vacío por defecto)"
+            android:textColor="#AAAAAA"/>
+        <EditText
+            android:id="@+id/et_temp_path"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ruta Custom Frecuencia (Dejar vacío por defecto)"
+            android:textColor="#AAAAAA"/>
+        <EditText
+            android:id="@+id/et_freq_path"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Módulos Visibles:"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"/>
+
+        <Switch android:id="@+id/sw_ram" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar RAM" android:textColor="#FFFFFF"/>
+        <Switch android:id="@+id/sw_swap" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar SWAP" android:textColor="#FFFFFF"/>
+        <Switch android:id="@+id/sw_rom" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Almacenamiento (ROM)" android:textColor="#FFFFFF"/>
+        <Switch android:id="@+id/sw_bat" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Batería" android:textColor="#FFFFFF"/>
+        <Switch android:id="@+id/sw_net" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Red" android:textColor="#FFFFFF"/>
+        <Switch android:id="@+id/sw_srv" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Servidores" android:textColor="#FFFFFF" android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/btn_hide_notif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ocultar Notificación del Servicio"
+            android:backgroundTint="#444444"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="15dp"/>
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GUARDAR Y APLICAR"
+            android:backgroundTint="#00CC44"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+</ScrollView>
