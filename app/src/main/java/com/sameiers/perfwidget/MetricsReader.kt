@@ -12,13 +12,17 @@ import java.net.Socket
 
 object MetricsReader {
 
-    private var prevIdle  = 0L
-    private var prevTotal = 0L
-    private var initialized = false
-    private var cpuThermalZonePath: String? = null
-    private var lastRx = TrafficStats.getTotalRxBytes()
-    private var lastTx = TrafficStats.getTotalTxBytes()
-    private var lastNetTime = SystemClock.elapsedRealtime()
+    @Volatile private var prevIdle  = 0L
+    @Volatile private var prevTotal = 0L
+    @Volatile private var initialized = false
+    @Volatile private var cpuThermalZonePath: String? = null
+
+    @Volatile private var lastRx = TrafficStats.getTotalRxBytes()
+    @Volatile private var lastTx = TrafficStats.getTotalTxBytes()
+    @Volatile private var lastNetTime = SystemClock.elapsedRealtime()
+
+    private val cpuLock = Any()
+    private val netLock = Any()
 
     init {
         Shell.setDefaultBuilder(
@@ -29,12 +33,13 @@ object MetricsReader {
     }
 
     private fun findCpuThermalZone(): String {
-        if (cpuThermalZonePath != null) return cpuThermalZonePath!!
+        cpuThermalZonePath?.let { return it }
         try {
             for (i in 0..30) {
                 val result = Shell.cmd("cat /sys/class/thermal/thermal_zone$i/type").exec()
                 val type = result.out.firstOrNull()?.lowercase()?.trim() ?: continue
-                if (type.contains("cpu") || type.contains("cluster") || type.contains("soc") || type.contains("tsens")) {
+                if (type.contains("cpu") || type.contains("cluster") ||
+                    type.contains("soc") || type.contains("tsens")) {
                     cpuThermalZonePath = "/sys/class/thermal/thermal_zone$i/temp"
                     return cpuThermalZonePath!!
                 }
@@ -47,44 +52,54 @@ object MetricsReader {
     data class CpuData(val usage: String, val freq: String, val temp: String)
 
     fun getCpuData(customTempPath: String, customFreqPath: String): CpuData {
-        return try {
-            val zonePath = if (customTempPath.isNotEmpty()) customTempPath else findCpuThermalZone()
-            val freqPath = if (customFreqPath.isNotEmpty()) customFreqPath else "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq"
-            
-            val cmd = "cat /proc/stat | grep '^cpu '; cat $freqPath; cat $zonePath"
-            val result = Shell.cmd(cmd).exec()
+        return synchronized(cpuLock) {
+            try {
+                val zonePath = if (customTempPath.isNotEmpty()) customTempPath else findCpuThermalZone()
+                val freqPath = if (customFreqPath.isNotEmpty()) customFreqPath
+                               else "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq"
 
-            var usageStr = "N/A"
-            var freqStr = "N/A"
-            var tempStr = "N/A"
+                val cmd = "cat /proc/stat | grep '^cpu '; cat $freqPath; cat $zonePath"
+                val result = Shell.cmd(cmd).exec()
 
-            if (result.isSuccess && result.out.size >= 3) {
-                val statLine = result.out.find { it.startsWith("cpu ") }
-                if (statLine != null) {
-                    val parts = statLine.trim().split("\\s+".toRegex())
-                    if (parts.size >= 8) {
-                        val total = parts.drop(1).take(7).sumOf { it.toLongOrNull() ?: 0L }
-                        val idle = parts[4].toLongOrNull() ?: 0L
-                        val diffIdle = idle - prevIdle
-                        val diffTotal = total - prevTotal
-                        
-                        if (diffTotal > 0 && initialized) {
-                            val u = ((diffTotal - diffIdle) * 100 / diffTotal).coerceIn(0L, 100L)
-                            usageStr = "$u"
-                        } else {
-                            usageStr = "0"
+                var usageStr = "N/A"
+                var freqStr  = "N/A"
+                var tempStr  = "N/A"
+
+                if (result.isSuccess && result.out.isNotEmpty()) {
+                    val statLine = result.out.find { it.startsWith("cpu ") }
+                    if (statLine != null) {
+                        val parts = statLine.trim().split("\\s+".toRegex())
+                        if (parts.size >= 8) {
+                            val total = parts.drop(1).take(7).sumOf { it.toLongOrNull() ?: 0L }
+                            val idle  = parts[4].toLongOrNull() ?: 0L
+                            val diffIdle  = idle  - prevIdle
+                            val diffTotal = total - prevTotal
+
+                            if (diffTotal > 0 && initialized) {
+                                val u = ((diffTotal - diffIdle) * 100 / diffTotal).coerceIn(0L, 100L)
+                                usageStr = "$u"
+                            } else {
+                                usageStr = "0"
+                            }
+                            prevIdle  = idle
+                            prevTotal = total
+                            initialized = true
                         }
-                        prevIdle = idle
-                        prevTotal = total
-                        initialized = true
+                    }
+
+                    val nonStatLines = result.out
+                        .filter { !it.startsWith("cpu") && it.isNotBlank() }
+
+                    if (nonStatLines.size >= 2) {
+                        freqStr = "${(nonStatLines[nonStatLines.size - 2].trim().toLongOrNull() ?: 0L) / 1000L}"
+                        tempStr = "${(nonStatLines[nonStatLines.size - 1].trim().toLongOrNull() ?: 0L) / 1000L}"
+                    } else if (nonStatLines.size == 1) {
+                        freqStr = "${(nonStatLines[0].trim().toLongOrNull() ?: 0L) / 1000L}"
                     }
                 }
-                val lines = result.out
-                freqStr = "${(lines[lines.size - 2].toLongOrNull() ?: 0L) / 1000L}"
-                tempStr = "${(lines[lines.size - 1].toLongOrNull() ?: 0L) / 1000L}"
-            }
-            CpuData(usageStr, freqStr, tempStr)
-        } catch (_: Exception) { CpuData("N/A", "N/A", "N/A") }
+                CpuData(usageStr, freqStr, tempStr)
+            } catch (_: Exception) { CpuData("N/A", "N/A", "N/A") }
+        }
     }
 
     data class MemInfo(val ramUsed: Long, val ramTotal: Long, val swapUsed: Long, val swapTotal: Long)
@@ -97,12 +112,12 @@ object MetricsReader {
                 if (parts.size >= 2) map[parts[0].trimEnd(':')] = parts[1].toLongOrNull() ?: 0L
             }
         } catch (_: Exception) {}
-        
+
         val memTotal  = map["MemTotal"]     ?: 0L
         val memAvail  = map["MemAvailable"] ?: 0L
         val swapTotal = map["SwapTotal"]    ?: 0L
         val swapFree  = map["SwapFree"]     ?: 0L
-        
+
         return MemInfo(
             ramUsed   = (memTotal - memAvail) / 1024L,
             ramTotal  = memTotal / 1024L,
@@ -113,48 +128,49 @@ object MetricsReader {
 
     fun getStorageInfo(): String {
         return try {
-            val stat = StatFs(Environment.getDataDirectory().path)
+            val stat      = StatFs(Environment.getDataDirectory().path)
             val blockSize = stat.blockSizeLong
             val totalBytes = stat.blockCountLong * blockSize
-            val freeBytes = stat.availableBlocksLong * blockSize
-            
+            val freeBytes  = stat.availableBlocksLong * blockSize
+
             val totalGB = totalBytes / (1024 * 1024 * 1024)
-            val usedGB = (totalBytes - freeBytes) / (1024 * 1024 * 1024)
+            val usedGB  = (totalBytes - freeBytes) / (1024 * 1024 * 1024)
             "$usedGB / $totalGB GB"
         } catch (_: Exception) { "N/A" }
     }
 
     fun getNetworkSpeed(): Pair<String, String> {
-        val now = SystemClock.elapsedRealtime()
-        val rx = TrafficStats.getTotalRxBytes()
-        val tx = TrafficStats.getTotalTxBytes()
+        return synchronized(netLock) {
+            val now = SystemClock.elapsedRealtime()
+            val rx  = TrafficStats.getTotalRxBytes()
+            val tx  = TrafficStats.getTotalTxBytes()
 
-        if (rx == TrafficStats.UNSUPPORTED.toLong() || rx == -1L) {
-            return Pair("N/A", "N/A")
-        }
-
-        var diffTime = (now - lastNetTime) / 1000f
-        if (diffTime <= 0f) diffTime = 1f 
-
-        val rxDiff = rx - lastRx
-        val txDiff = tx - lastTx
-
-        lastRx = rx
-        lastTx = tx
-        lastNetTime = now
-
-        fun formatBytes(bytes: Long): String {
-            val bytesPerSec = bytes / diffTime
-            val kbps = bytesPerSec / 1024f
-            
-            return if (kbps >= 1024f) {
-                String.format("%.1f MB/s", kbps / 1024f)
-            } else {
-                String.format("%.1f KB/s", kbps)
+            if (rx == TrafficStats.UNSUPPORTED.toLong() || rx == -1L) {
+                return@synchronized Pair("N/A", "N/A")
             }
+
+            var diffTime = (now - lastNetTime) / 1000f
+            if (diffTime <= 0f) diffTime = 1f
+
+            val rxDiff = rx - lastRx
+            val txDiff = tx - lastTx
+
+            lastRx      = rx
+            lastTx      = tx
+            lastNetTime = now
+
+            fun formatBytes(bytes: Long): String {
+                val bytesPerSec = bytes / diffTime
+                val kbps = bytesPerSec / 1024f
+                return if (kbps >= 1024f) {
+                    String.format("%.1f MB/s", kbps / 1024f)
+                } else {
+                    String.format("%.1f KB/s", kbps)
+                }
+            }
+
+            Pair(formatBytes(rxDiff), formatBytes(txDiff))
         }
-        
-        return Pair(formatBytes(rxDiff), formatBytes(txDiff))
     }
 
     fun checkServers(servers: List<Pair<String, Int>>): String {
@@ -162,12 +178,12 @@ object MetricsReader {
         for ((ip, port) in servers) {
             val online = try {
                 val socket = Socket()
-                socket.connect(InetSocketAddress(ip, port), 800) 
+                socket.connect(InetSocketAddress(ip, port), 800)
                 socket.close()
                 true
             } catch (_: Exception) { false }
-            
-            val color = if (online) "#00CC44" else "#FF4444"
+
+            val color  = if (online) "#00CC44" else "#FF4444"
             val status = if (online) "ON" else "OFF"
             sb.append("$ip:$port [<font color='$color'>$status</font>]  ")
         }
@@ -177,7 +193,7 @@ object MetricsReader {
     fun getUptime(): String {
         return try {
             val millis = SystemClock.elapsedRealtime()
-            val secs = millis / 1000L
+            val secs   = millis / 1000L
             val h = secs / 3600
             val m = (secs % 3600) / 60
             val s = secs % 60
@@ -195,5 +211,12 @@ object MetricsReader {
             val pct     = if (scale > 0) level * 100 / scale else 0
             Pair(pct, temp)
         } catch (_: Exception) { Pair(0, 0) }
+    }
+
+    fun getAvailableCoreCount(): Int {
+        return try {
+            val result = Shell.cmd("ls /sys/devices/system/cpu/ | grep -c '^cpu[0-9]'").exec()
+            result.out.firstOrNull()?.trim()?.toIntOrNull() ?: 8
+        } catch (_: Exception) { 8 }
     }
 }
