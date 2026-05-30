@@ -302,7 +302,13 @@ class MainActivity : Activity() {
                         coresContainer.addView(tv)
                     }
                 }
-                Thread.sleep(1000)
+                
+                try {
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+                    
+                    break 
+                }
             }
         }
         hardwareThread?.start()
