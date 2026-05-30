@@ -41,6 +41,8 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        MetricsReader.init()
+
         Shell.getShell { shell ->
             if (!shell.isRoot) {
                 Toast.makeText(this, "Error: ¡Se requieren permisos Root!", Toast.LENGTH_LONG).show()
@@ -123,6 +125,7 @@ class MainActivity : Activity() {
         swSrv.isChecked  = prefs.getBoolean("show_srv",  true)
 
         btnSave.setOnClickListener {
+
             val rawInterval = etInterval.text.toString().toIntOrNull()
             if (rawInterval != null && rawInterval < 0) {
                 Toast.makeText(this, "El intervalo no puede ser negativo", Toast.LENGTH_SHORT).show()
