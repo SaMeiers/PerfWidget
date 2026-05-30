@@ -17,14 +17,14 @@ object MetricsReader {
     @Volatile private var initialized = false
     @Volatile private var cpuThermalZonePath: String? = null
 
-    @Volatile private var lastRx = TrafficStats.getTotalRxBytes()
-    @Volatile private var lastTx = TrafficStats.getTotalTxBytes()
-    @Volatile private var lastNetTime = SystemClock.elapsedRealtime()
+    @Volatile private var lastRx = -1L
+    @Volatile private var lastTx = -1L
+    @Volatile private var lastNetTime = -1L
 
     private val cpuLock = Any()
     private val netLock = Any()
 
-    init {
+    fun init() {
         Shell.setDefaultBuilder(
             Shell.Builder.create()
                 .setFlags(Shell.FLAG_REDIRECT_STDERR)
@@ -145,8 +145,15 @@ object MetricsReader {
             val rx  = TrafficStats.getTotalRxBytes()
             val tx  = TrafficStats.getTotalTxBytes()
 
-            if (rx == TrafficStats.UNSUPPORTED.toLong() || rx == -1L) {
+            if (rx == TrafficStats.UNSUPPORTED.toLong()) {
                 return@synchronized Pair("N/A", "N/A")
+            }
+
+            if (lastRx == -1L) {
+                lastRx      = rx
+                lastTx      = tx
+                lastNetTime = now
+                return@synchronized Pair("0.0 KB/s", "0.0 KB/s")
             }
 
             var diffTime = (now - lastNetTime) / 1000f
