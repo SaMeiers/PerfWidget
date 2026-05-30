@@ -48,15 +48,43 @@
         android:fontFamily="monospace"
         android:singleLine="true"/>
 
-    <TextView
-        android:id="@+id/tv_bat"
+    <LinearLayout
+        android:id="@+id/ll_bat_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="BAT:  --% @ --°C"
-        android:textColor="#FFFFFF"
-        android:textSize="11sp"
-        android:fontFamily="monospace"
-        android:singleLine="true"/>
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_bat_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BAT:  "
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:fontFamily="monospace"
+            android:singleLine="true"/>
+
+        <TextView
+            android:id="@+id/tv_bat_pct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--%"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:fontFamily="monospace"
+            android:singleLine="true"
+            android:layout_marginEnd="4dp"/>
+
+        <TextView
+            android:id="@+id/tv_bat_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@ --°C"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:fontFamily="monospace"
+            android:singleLine="true"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_net"

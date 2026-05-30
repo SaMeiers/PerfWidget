@@ -97,48 +97,13 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="10dp"/>
 
-                <Switch
-                    android:id="@+id/sw_ram"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Mostrar RAM"
-                    android:textColor="#FFFFFF"/>
-
-                <Switch
-                    android:id="@+id/sw_swap"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Mostrar SWAP"
-                    android:textColor="#FFFFFF"/>
-
-                <Switch
-                    android:id="@+id/sw_rom"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Mostrar Almacenamiento"
-                    android:textColor="#FFFFFF"/>
-
-                <Switch
-                    android:id="@+id/sw_bat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Mostrar Batería"
-                    android:textColor="#FFFFFF"/>
-
-                <Switch
-                    android:id="@+id/sw_net"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Mostrar Red"
-                    android:textColor="#FFFFFF"/>
-
-                <Switch
-                    android:id="@+id/sw_srv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Mostrar Servidores"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginBottom="20dp"/>
+                <Switch android:id="@+id/sw_ram" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar RAM" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/sw_swap" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar SWAP" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/sw_rom" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Almacenamiento" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/sw_bat" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Batería" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/sw_net" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Red" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/sw_srv" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Servidores" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/sw_my_ram" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar RAM de la App (En Uptime)" android:textColor="#FFFFFF" android:layout_marginBottom="20dp"/>
 
                 <Button
                     android:id="@+id/btn_hide_notif"
