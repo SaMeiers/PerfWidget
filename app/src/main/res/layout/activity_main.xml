@@ -1,115 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:background="#121212">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:id="@+id/tab_config"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PerfWidget Settings" android:textColor="#FFFFFF" android:textSize="24sp" android:textStyle="bold" android:layout_marginBottom="20dp"/>
+
+                <Switch android:id="@+id/switch_ascii" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Usar Interfaz Gráfica ASCII" android:textColor="#FFFFFF" android:layout_marginBottom="15dp"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Intervalo de actualización (Segundos, 0 = Manual)" android:textColor="#AAAAAA"/>
+                <EditText android:id="@+id/et_interval" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="number" android:textColor="#FFFFFF" android:layout_marginBottom="15dp"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Servidores (IP:PUERTO separados por coma)" android:textColor="#AAAAAA"/>
+                <EditText android:id="@+id/et_servers" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Ej: 192.168.1.1:80" android:textColorHint="#555555" android:textColor="#FFFFFF" android:layout_marginBottom="15dp"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ruta Custom Temperatura" android:textColor="#AAAAAA"/>
+                <EditText android:id="@+id/et_temp_path" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#FFFFFF" android:layout_marginBottom="10dp"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ruta Custom Frecuencia" android:textColor="#AAAAAA"/>
+                <EditText android:id="@+id/et_freq_path" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#FFFFFF" android:layout_marginBottom="20dp"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Módulos Visibles:" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_marginBottom="10dp"/>
+                <Switch android:id="@+id/sw_ram" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar RAM" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/sw_swap" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar SWAP" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/sw_rom" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Almacenamiento" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/sw_bat" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Batería" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/sw_net" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Red" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/sw_srv" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Servidores" android:textColor="#FFFFFF" android:layout_marginBottom="20dp"/>
+
+                <Button android:id="@+id/btn_hide_notif" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Ocultar Notificación del Servicio" android:backgroundTint="#444444" android:textColor="#FFFFFF" android:layout_marginBottom="15dp"/>
+                <Button android:id="@+id/btn_save" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="GUARDAR Y APLICAR" android:backgroundTint="#00CC44" android:textColor="#FFFFFF" android:textStyle="bold"/>
+            </LinearLayout>
+        </ScrollView>
+
+        <ScrollView
+            android:id="@+id/tab_memory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Monitor de Memoria (Top 15)" android:textColor="#FFFFFF" android:textSize="20sp" android:textStyle="bold" android:layout_marginBottom="10dp"/>
+                <Button android:id="@+id/btn_scan_ram" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="ESCANEAR PROCESOS" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_marginBottom="15dp"/>
+                
+                <LinearLayout android:id="@+id/ll_ram_container" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"/>
+            </LinearLayout>
+        </ScrollView>
+
+        <ScrollView
+            android:id="@+id/tab_hardware"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Estado de Núcleos (Tiempo Real)" android:textColor="#FFFFFF" android:textSize="20sp" android:textStyle="bold" android:layout_marginBottom="10dp"/>
+                
+                <LinearLayout android:id="@+id/ll_cores_container" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="#222222" android:padding="10dp" android:layout_marginBottom="20dp"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Gobernador CPU (Acelerador)" android:textColor="#FFFFFF" android:textSize="16sp" android:textStyle="bold" android:layout_marginBottom="5dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="20dp">
+                    <Button android:id="@+id/btn_gov_perf" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="PERFORMANCE" android:backgroundTint="#FF4444" android:textColor="#FFFFFF" android:layout_marginEnd="5dp"/>
+                    <Button android:id="@+id/btn_gov_power" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="POWERSAVE" android:backgroundTint="#00CC44" android:textColor="#FFFFFF" android:layout_marginStart="5dp"/>
+                </LinearLayout>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Protección de Batería" android:textColor="#FFFFFF" android:textSize="16sp" android:textStyle="bold" android:layout_marginBottom="5dp"/>
+                
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ruta Custom Límite de Batería" android:textColor="#AAAAAA"/>
+                <EditText android:id="@+id/et_bat_path" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="/sys/class/power_supply/battery/charge_control_limit" android:textColorHint="#555555" android:textColor="#FFFFFF" android:layout_marginBottom="10dp"/>
+
+                <Button android:id="@+id/btn_bat_limit" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="FORZAR CORTE DE CARGA AL 80%" android:backgroundTint="#FFBB33" android:textColor="#000000" android:textStyle="bold"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Nota: El limitador de carga depende fuertemente del Kernel. Puede no funcionar en todos los dispositivos." android:textColor="#777777" android:textSize="12sp" android:layout_marginTop="5dp" android:gravity="center"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="#1E1E1E">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="PerfWidget Settings"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp"/>
-
-        <Switch
-            android:id="@+id/switch_ascii"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Usar Interfaz Gráfica ASCII"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="15dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Intervalo de actualización (Segundos, 0 = Manual)"
-            android:textColor="#AAAAAA"/>
-        <EditText
-            android:id="@+id/et_interval"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="15dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Servidores (IP:PUERTO separados por coma)"
-            android:textColor="#AAAAAA"/>
-        <EditText
-            android:id="@+id/et_servers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ej: 192.168.1.1:80, 8.8.8.8:53"
-            android:textColorHint="#555555"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="15dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ruta Custom Temperatura (Dejar vacío por defecto)"
-            android:textColor="#AAAAAA"/>
-        <EditText
-            android:id="@+id/et_temp_path"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="10dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ruta Custom Frecuencia (Dejar vacío por defecto)"
-            android:textColor="#AAAAAA"/>
-        <EditText
-            android:id="@+id/et_freq_path"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="20dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Módulos Visibles:"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
-
-        <Switch android:id="@+id/sw_ram" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar RAM" android:textColor="#FFFFFF"/>
-        <Switch android:id="@+id/sw_swap" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar SWAP" android:textColor="#FFFFFF"/>
-        <Switch android:id="@+id/sw_rom" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Almacenamiento (ROM)" android:textColor="#FFFFFF"/>
-        <Switch android:id="@+id/sw_bat" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Batería" android:textColor="#FFFFFF"/>
-        <Switch android:id="@+id/sw_net" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Red" android:textColor="#FFFFFF"/>
-        <Switch android:id="@+id/sw_srv" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Mostrar Servidores" android:textColor="#FFFFFF" android:layout_marginBottom="20dp"/>
-
-        <Button
-            android:id="@+id/btn_hide_notif"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ocultar Notificación del Servicio"
-            android:backgroundTint="#444444"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="15dp"/>
-
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="GUARDAR Y APLICAR"
-            android:backgroundTint="#00CC44"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"/>
+        <Button android:id="@+id/nav_config" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="CONFIG" android:background="@android:color/transparent" android:textColor="#00CC44" android:textStyle="bold"/>
+        <Button android:id="@+id/nav_memory" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="RAM" android:background="@android:color/transparent" android:textColor="#AAAAAA"/>
+        <Button android:id="@+id/nav_hardware" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="HARDWARE" android:background="@android:color/transparent" android:textColor="#AAAAAA"/>
 
     </LinearLayout>
-</ScrollView>
+
+</LinearLayout>
