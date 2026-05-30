@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,7 +30,7 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="20dp"/>
 
-                <androidx.appcompat.widget.SwitchCompat
+                <Switch
                     android:id="@+id/switch_ascii"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -98,42 +97,42 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="10dp"/>
 
-                <androidx.appcompat.widget.SwitchCompat
+                <Switch
                     android:id="@+id/sw_ram"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Mostrar RAM"
                     android:textColor="#FFFFFF"/>
 
-                <androidx.appcompat.widget.SwitchCompat
+                <Switch
                     android:id="@+id/sw_swap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Mostrar SWAP"
                     android:textColor="#FFFFFF"/>
 
-                <androidx.appcompat.widget.SwitchCompat
+                <Switch
                     android:id="@+id/sw_rom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Mostrar Almacenamiento"
                     android:textColor="#FFFFFF"/>
 
-                <androidx.appcompat.widget.SwitchCompat
+                <Switch
                     android:id="@+id/sw_bat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Mostrar Batería"
                     android:textColor="#FFFFFF"/>
 
-                <androidx.appcompat.widget.SwitchCompat
+                <Switch
                     android:id="@+id/sw_net"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Mostrar Red"
                     android:textColor="#FFFFFF"/>
 
-                <androidx.appcompat.widget.SwitchCompat
+                <Switch
                     android:id="@+id/sw_srv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
