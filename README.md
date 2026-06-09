@@ -22,9 +22,11 @@ alt="Widget" width="250" />
 ## Screenshots
 
 <div align="center">
-  <img src="screenshots/config.webp" alt="Configuración" width="250" />
-  <img src="screenshots/ram.webp" alt="Monitor de RAM" width="250" />
-  <img src="screenshots/hardware.webp" alt="Hardware" width="250" />
+  <div style="display: flex; overflow-x: auto; gap: 12px; padding: 10px 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+    <img src="screenshots/config.webp" alt="Configuración" width="250" style="scroll-snap-align: start; border-radius: 12px;" />
+    <img src="screenshots/ram.webp" alt="Monitor de RAM" width="250" style="scroll-snap-align: start; border-radius: 12px;" />
+    <img src="screenshots/hardware.webp" alt="Hardware" width="250" style="scroll-snap-align: start; border-radius: 12px;" />
+  </div>
 </div>
 
 ---
