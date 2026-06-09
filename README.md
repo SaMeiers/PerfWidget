@@ -14,6 +14,11 @@
 
 PerfWidget lee métricas directamente desde el núcleo del sistema operativo (`/proc`, `/sys`) para ofrecer estadísticas precisas en tiempo real. Desarrollado como reto personal, demuestra cómo construir un monitor de recursos ligero aprovechando permisos de superusuario.
 
+<div align="center">
+<img src="screenshots/widget.webp"
+alt="Widget" width="250" />
+</div>
+  
 ## Screenshots
 
 <div align="center">
